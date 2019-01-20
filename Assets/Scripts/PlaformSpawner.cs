@@ -6,8 +6,11 @@ public class PlaformSpawner : MonoBehaviour
 {
 
     public GameObject platform;
+    public GameObject diamond;
+
     Vector3 lastPos;
     float size;
+    public bool gameOver;
 
     // Start is called before the first frame update
     void Start()
@@ -25,7 +28,10 @@ public class PlaformSpawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        
+        if (gameOver)
+        {
+            CancelInvoke("SpawnPlatforms");
+        }
     }
 
     void SpawnPlatforms()
@@ -47,6 +53,11 @@ public class PlaformSpawner : MonoBehaviour
         pos.x += size;
         lastPos = pos;
         Instantiate(platform, pos,Quaternion.identity);
+
+        int rand = Random.Range(0, 4);
+        if (rand < 1) {
+            Instantiate(diamond, new Vector3(pos.x,pos.y + 1, pos.z), diamond.transform.rotation);
+        }
     }
 
     void SpawnZ()
@@ -55,6 +66,12 @@ public class PlaformSpawner : MonoBehaviour
         pos.z += size;
         lastPos = pos;
         Instantiate(platform, pos, Quaternion.identity);
+
+        int rand = Random.Range(0, 4);
+        if (rand < 1)
+        {
+            Instantiate(diamond, new Vector3(pos.x, pos.y + 1, pos.z), diamond.transform.rotation);
+        }
     }
 
 

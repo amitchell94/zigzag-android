@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class BallController : MonoBehaviour
 {
+    public GameObject particle;
+
     [SerializeField]
     private float speed;
     bool started;
@@ -50,6 +52,7 @@ public class BallController : MonoBehaviour
             rb.velocity = new Vector3(0, -25f, 0);
 
             Camera.main.GetComponent<CameraFollow>().gameOver = true;
+            GetComponentInParent<PlaformSpawner>().gameOver = true;
         }
     }
 
@@ -61,6 +64,17 @@ public class BallController : MonoBehaviour
         } else if (rb.velocity.x > 0)
         {
             rb.velocity = new Vector3(0, 0, speed);
+        }
+    }
+
+    private void OnTriggerEnter(Collider col)
+    {
+        if (col.gameObject.tag == "Diamond")
+        {
+            GameObject part = Instantiate(particle, col.gameObject.transform.position, Quaternion.identity) as GameObject;
+
+            Destroy(col.gameObject);
+            Destroy(part, 1f);
         }
     }
 }
